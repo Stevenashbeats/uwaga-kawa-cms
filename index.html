@@ -44,13 +44,32 @@
           <div id="sections-container"></div>
         </section>
 
-        <!-- Generowanie linku -->
+        <!-- Linki dla telewizorów -->
         <section class="editor-section share-section">
-          <h3>Udostępnij na TV</h3>
-          <button id="generate-link-btn" class="primary-btn">📺 Generuj link dla TV (1080x1920)</button>
-          <input type="text" id="share-link" readonly placeholder="Kliknij, aby wygenerować link" />
-          <button id="copy-link-btn" class="secondary-btn" disabled>📋 Kopiuj</button>
+          <h3>Linki dla telewizorów</h3>
+          <p class="info-text">Każdy TV ma swój unikalny link. Dane synchronizują się automatycznie.</p>
+          
+          <div class="tv-link-group">
+            <label>📺 TV 1 - Napoje</label>
+            <div class="link-row">
+              <input type="text" id="tv1-link" readonly class="link-input" />
+              <button id="copy-tv1-btn" class="secondary-btn">📋</button>
+            </div>
+          </div>
+          
+          <div class="tv-link-group">
+            <label>📺 TV 2 - Jedzenie</label>
+            <div class="link-row">
+              <input type="text" id="tv2-link" readonly class="link-input" />
+              <button id="copy-tv2-btn" class="secondary-btn">📋</button>
+            </div>
+          </div>
         </section>
+        
+        <!-- Stary przycisk (ukryty) -->
+        <input type="text" id="share-link" readonly style="display:none" />
+        <button id="copy-link-btn" style="display:none"></button>
+        <button id="generate-link-btn" style="display:none"></button>
       </div>
     </aside>
 
@@ -66,6 +85,8 @@
 
   <script src="app.js"></script>
   <script src="multi-tv-functions.js"></script>
+  <script src="sync-system.js"></script>
+  <script src="tv-links.js"></script>
   <script src="autoscale.js"></script>
   <script src="zoom-controls.js"></script>
 </body>

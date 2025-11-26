@@ -258,9 +258,13 @@ window.attachGlobalListeners = function() {
   });
 
   generateLinkBtn.addEventListener("click", () => {
-    const encoded = btoa(encodeURIComponent(JSON.stringify(appState)));
-    const url = new URL(window.location.href);
-    url.searchParams.set("d", encoded);
+    // Zapisz aktualny stan do localStorage
+    if (typeof saveToLocalStorage === 'function') {
+      saveToLocalStorage();
+    }
+    
+    // Generuj prosty link z tylko tvid (dane z localStorage)
+    const url = new URL(window.location.origin + window.location.pathname);
     url.searchParams.set("tv", "1");
     url.searchParams.set("tvid", appState.currentTvId);
     shareLinkInput.value = url.toString();
@@ -306,9 +310,17 @@ function updateTvSelector() {
 // Inicjalizacja TV managera
 window.addEventListener('DOMContentLoaded', () => {
   const tvSelector = document.getElementById("tv-selector");
+  const params = new URLSearchParams(window.location.search);
+  const isTVMode = params.get("tv") === "1";
   
-  if (tvSelector) {
+  if (tvSelector && !isTVMode) {
     updateTvSelector();
+    
+    // Wyrenderuj pierwszy telewizor od razu
+    setTimeout(() => {
+      renderEditor();
+      renderPreview();
+    }, 100);
     
     tvSelector.addEventListener("change", (e) => {
       setCurrentTv(e.target.value);

@@ -213,6 +213,50 @@ body {
   padding: 8px 10px;
 }
 
+.info-text {
+  font-size: 13px;
+  color: #888888;
+  margin-bottom: 16px;
+  line-height: 1.5;
+}
+
+.tv-link-group {
+  margin-bottom: 16px;
+}
+
+.tv-link-group:last-child {
+  margin-bottom: 0;
+}
+
+.tv-link-group label {
+  display: block;
+  font-size: 13px;
+  font-weight: 500;
+  color: #cccccc;
+  margin-bottom: 6px;
+}
+
+.link-row {
+  display: flex;
+  gap: 8px;
+}
+
+.link-input {
+  flex: 1;
+  background: #1a1a1a;
+  border: 1px solid #3a3a3a;
+  color: #ffffff;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 13px;
+  font-family: 'Courier New', monospace;
+}
+
+.link-input:focus {
+  outline: none;
+  border-color: #555555;
+}
+
 /* Section card */
 .section-card {
   background: #2a2a2a;
