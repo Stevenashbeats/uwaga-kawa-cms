@@ -1,40 +1,109 @@
-// Stan aplikacji
+// Stan aplikacji - Multi-TV
 let appState = {
-  venueName: "UWAGA KAWA",
-  venueSubtitle: "",
-  sections: [
-    {
-      id: "kawa",
-      title: "KAWA",
-      note: "*dodatkowe espresso, mleko roślinne, syrop + 2 zł",
-      items: [
-        { name: "ESPRESSO / DOPPIO", description: "", price: "6 / 8" },
-        { name: "ESPRESSO MACCHIATO", description: "", price: "9" },
-        { name: "AMERICANO / Z MLEKIEM", description: "hot / cold", price: "8 / 10" },
-        { name: "CAPPUCCINO", description: "hot / cold", price: "14" },
-        { name: "FLAT WHITE", description: "hot / cold", price: "15" },
-        { name: "CAFFE LATTE", description: "hot / cold", price: "16" },
-        { name: "AFFOGATO", description: "", price: "13" },
-        { name: "IRISH COFFEE", description: "", price: "24" },
-        { name: "ESPRESSO TONIC", description: "", price: "15" }
+  currentTvId: "tv1",
+  tvs: {
+    tv1: {
+      id: "tv1",
+      name: "TV 1 - Napoje",
+      venueName: "UWAGA KAWA",
+      venueSubtitle: "",
+      sections: [
+        {
+          id: "kawa",
+          title: "KAWA",
+          note: "*dodatkowe espresso, mleko roślinne, syrop + 2 zł",
+          items: [
+            { name: "ESPRESSO / DOPPIO", description: "", price: "6 / 8" },
+            { name: "ESPRESSO MACCHIATO", description: "", price: "9" },
+            { name: "AMERICANO / Z MLEKIEM", description: "hot / cold", price: "8 / 10" },
+            { name: "CAPPUCCINO", description: "hot / cold", price: "14" },
+            { name: "FLAT WHITE", description: "hot / cold", price: "15" },
+            { name: "CAFFE LATTE", description: "hot / cold", price: "16" },
+            { name: "AFFOGATO", description: "", price: "13" },
+            { name: "IRISH COFFEE", description: "", price: "24" },
+            { name: "ESPRESSO TONIC", description: "", price: "15" }
+          ]
+        },
+        {
+          id: "inne",
+          title: "INNE NAPOJE",
+          note: "",
+          items: [
+            { name: "HERBATA SZKLANKA / DZBANEK", description: "300 / 750 ml", price: "12 / 15" },
+            { name: "HERBATA ZIMOWA", description: "300 ml", price: "20" },
+            { name: "MATCHA LATTE", description: "hot / cold", price: "18" },
+            { name: "KAKAO MIĘTOWE", description: "", price: "20" },
+            { name: "NAPAR IMBIROWO POMARAŃCZOWY", description: "", price: "20" },
+            { name: "LEMONIADA WŁASNEJ ROBOTY", description: "", price: "?" },
+            { name: "SMOOTHIE", description: "jabłko, pomarańcza, grejpfrut", price: "18" }
+          ]
+        }
       ]
     },
-    {
-      id: "inne",
-      title: "INNE NAPOJE",
-      note: "",
-      items: [
-        { name: "HERBATA SZKLANKA / DZBANEK", description: "300 / 750 ml", price: "12 / 15" },
-        { name: "HERBATA ZIMOWA", description: "300 ml", price: "20" },
-        { name: "MATCHA LATTE", description: "hot / cold", price: "18" },
-        { name: "KAKAO MIĘTOWE", description: "", price: "20" },
-        { name: "NAPAR IMBIROWO POMARAŃCZOWY", description: "", price: "20" },
-        { name: "LEMONIADA WŁASNEJ ROBOTY", description: "", price: "?" },
-        { name: "SMOOTHIE", description: "jabłko, pomarańcza, grejpfrut", price: "18" }
+    tv2: {
+      id: "tv2",
+      name: "TV 2 - Jedzenie",
+      venueName: "UWAGA KAWA",
+      venueSubtitle: "",
+      sections: [
+        {
+          id: "oferta",
+          title: "OFERTA PORANNA",
+          note: "",
+          items: [
+            { name: "AUTORSKIE KANAPKI", description: "", price: "10 / 20" },
+            { name: "WRAPY", description: "", price: "10 / 20" },
+            { name: "BOWL", description: "", price: "18" }
+          ]
+        },
+        {
+          id: "slodkosci",
+          title: "SŁODKOŚCI",
+          note: "",
+          items: [
+            { name: "CYNAMONKA", description: "", price: "10" },
+            { name: "DROŻDŻÓWKA", description: "", price: "10" },
+            { name: "CIASTO DOMOWE NA CIEPŁO", description: "GAŁKA LODÓW + 7 ZŁ", price: "10" },
+            { name: "LAVA CAKE", description: "PODAWANE Z MUSEM MALINOWYM, GAŁKA LODÓW + 7 ZŁ", price: "10" },
+            { name: "NEW YORK CHEESECAKE", description: "", price: "10" },
+            { name: "LODY Z GORĄCYMI MALINAMI", description: "", price: "10" }
+          ]
+        },
+        {
+          id: "zupy",
+          title: "ZUPY OD GODZ. 12",
+          note: "",
+          items: [
+            { name: "ŻUREK", description: "JAJKO + 2 ZŁ, PIECZYWO + 1 ZŁ", price: "15 / 20" },
+            { name: "ZUPA KREM", description: "", price: "13 / 18" }
+          ]
+        },
+        {
+          id: "wieczorne",
+          title: "WIECZORNE MENU OD GODZ. 15",
+          note: "",
+          items: [
+            { name: "PIZZA RZYMSKA NA KAWAŁKI", description: "", price: "15 / 20" },
+            { name: "ZAPIEKANKI FIRMOWE", description: "", price: "13 / 18" },
+            { name: "QUESADILLA VEGE", description: "", price: "15" }
+          ]
+        }
       ]
     }
-  ]
+  }
 };
+
+// Pomocnicze funkcje
+function getCurrentTv() {
+  return appState.tvs[appState.currentTvId];
+}
+
+function setCurrentTv(tvId) {
+  appState.currentTvId = tvId;
+  renderEditor();
+  renderPreview();
+  updateTvSelector();
+}
 
 // Elementy DOM
 const sectionsContainer = document.getElementById("sections-container");
@@ -71,10 +140,17 @@ function init() {
 function loadStateFromURL() {
   const params = new URLSearchParams(window.location.search);
   const encoded = params.get("d");
+  const tvid = params.get("tvid");
+  
   if (encoded) {
     try {
       const decoded = JSON.parse(decodeURIComponent(atob(encoded)));
       appState = decoded;
+      
+      // Jeśli jest tvid, ustaw aktywny telewizor
+      if (tvid && appState.tvs && appState.tvs[tvid]) {
+        appState.currentTvId = tvid;
+      }
     } catch (e) {
       console.error("Błąd dekodowania URL:", e);
     }

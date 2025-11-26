@@ -104,6 +104,29 @@ body {
   color: #aaaaaa;
 }
 
+/* TV Selector */
+.tv-select {
+  width: 100%;
+  background: #2a2a2a;
+  border: 1px solid #3a3a3a;
+  color: #ffffff;
+  padding: 10px 12px;
+  border-radius: 6px;
+  font-size: 14px;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.tv-select:focus {
+  outline: none;
+  border-color: #555555;
+}
+
+.tv-select option {
+  background: #2a2a2a;
+  color: #ffffff;
+}
+
 .section-header {
   display: flex;
   justify-content: space-between;
