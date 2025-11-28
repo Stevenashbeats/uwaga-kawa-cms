@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>UWAGA KAWA - CMS</title>
+  <title>uwaga kawa menu editor</title>
   <link rel="stylesheet" href="style.css" />
 </head>
 <body>
@@ -11,7 +11,7 @@
     <!-- Panel edytora -->
     <aside class="editor-sidebar">
       <div class="editor-header">
-        <h1>🎨 Edytor Menu</h1>
+        <img src="pictures/UWAGA WHITE.svg" alt="UWAGA KAWA" class="editor-logo" />
         <button id="toggle-mode-btn" class="mode-btn">👁️ Podgląd</button>
       </div>
 
@@ -44,10 +44,16 @@
           <div id="sections-container"></div>
         </section>
 
+        <!-- Zapisz zmiany -->
+        <section class="editor-section">
+          <button id="save-btn" class="primary-btn save-btn">💾 Zapisz zmiany</button>
+          <p class="save-info" id="save-info">Niezapisane zmiany</p>
+        </section>
+
         <!-- Linki dla telewizorów -->
         <section class="editor-section share-section">
           <h3>Linki dla telewizorów</h3>
-          <p class="info-text">Każdy TV ma swój unikalny link. Dane synchronizują się automatycznie.</p>
+          <p class="info-text">Każdy TV ma swój unikalny link. Kliknij "Zapisz zmiany" aby zaktualizować telewizory.</p>
           
           <div class="tv-link-group">
             <label>📺 TV 1 - Napoje</label>

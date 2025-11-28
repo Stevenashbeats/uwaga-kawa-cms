@@ -1,4 +1,4 @@
-# UWAGA KAWA - CMS Menu dla TV
+# uwaga kawa menu editor
 
 System zarządzania menu kawiarni zoptymalizowany pod wyświetlanie na telewizorach pionowych **1080x1920px**.  
 **Obsługuje wiele telewizorów** - możesz tworzyć osobne menu dla różnych TV (np. napoje, jedzenie).
