@@ -20,13 +20,24 @@ function autoScaleContent() {
   // Użyj requestAnimationFrame dla płynności
   requestAnimationFrame(() => {
     const containerHeight = 1920; // Pełna wysokość kontenera
-    const contentHeight = menuPreview.scrollHeight;
+    
+    // Pobierz rzeczywistą wysokość zawartości
+    const contentHeight = Math.max(
+      menuPreview.scrollHeight,
+      menuPreview.offsetHeight,
+      menuPreview.getBoundingClientRect().height
+    );
+    
+    console.log(`📏 Autoscale: container=${containerHeight}px, content=${contentHeight}px`);
     
     let newScale = 1;
     
-    if (contentHeight > containerHeight) {
-      // Oblicz nową skalę
-      newScale = containerHeight / contentHeight;
+    // Zawsze skaluj jeśli zawartość jest większa, z małym marginesem bezpieczeństwa
+    const availableHeight = containerHeight - 120; // 60px padding góra + dół
+    if (contentHeight > availableHeight) {
+      // Oblicz nową skalę z marginesem
+      newScale = availableHeight / contentHeight;
+      console.log(`🔽 Skalowanie do ${Math.round(newScale * 100)}%`);
     }
     
     // Zastosuj skalę tylko jeśli się zmieniła
@@ -38,7 +49,7 @@ function autoScaleContent() {
       if (newScale < 1) {
         const scaledHeight = contentHeight * newScale;
         menuPreview.style.height = `${contentHeight}px`;
-        menuPreview.style.marginBottom = `${(contentHeight - scaledHeight)}px`;
+        menuPreview.style.marginBottom = `-${(contentHeight - scaledHeight)}px`;
       } else {
         menuPreview.style.height = 'auto';
         menuPreview.style.marginBottom = '0';
