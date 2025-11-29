@@ -3,15 +3,13 @@ let currentScale = 1;
 let isScaling = false;
 
 function autoScaleContent() {
-  // Sprawdź czy jesteśmy w trybie TV
+  // Sprawdź czy jesteśmy w trybie TV lub edytorze z podglądem
   const urlParams = new URLSearchParams(window.location.search);
   const isTVMode = urlParams.has('tv');
+  const isEditor = !isTVMode; // Jeśli nie TV, to edytor
   
-  // Autoscale tylko w trybie TV
-  if (!isTVMode) {
-    console.log('⏭️ Autoscale: pomijam - nie tryb TV');
-    return;
-  }
+  // Autoscale działa WSZĘDZIE (TV i edytor)
+  console.log(`🎯 Autoscale: tryb=${isTVMode ? 'TV' : 'Edytor'}`);
   
   const menuPreview = document.getElementById('menu-preview');
   const menuContainer = document.querySelector('.tv-screen .menu-container');
@@ -87,17 +85,13 @@ function autoScaleContent() {
   });
 }
 
-// Uruchom autoscale po każdej zmianie - TYLKO w trybie TV
+// Uruchom autoscale po każdej zmianie - WSZĘDZIE (TV i edytor)
 const originalRenderPreview = window.renderPreview;
 if (originalRenderPreview) {
   window.renderPreview = function() {
     originalRenderPreview();
-    // Autoscale tylko w trybie TV
-    const urlParams = new URLSearchParams(window.location.search);
-    const isTVMode = urlParams.has('tv');
-    if (isTVMode) {
-      autoScaleContent();
-    }
+    // Autoscale zawsze po renderze
+    setTimeout(autoScaleContent, 100);
   };
 }
 
@@ -109,13 +103,10 @@ window.addEventListener('load', () => {
 });
 window.addEventListener('resize', autoScaleContent);
 
-// Dodaj MutationObserver aby wykrywać zmiany w DOM
+// Dodaj MutationObserver aby wykrywać zmiany w DOM - WSZĘDZIE
 const observer = new MutationObserver(() => {
-  const urlParams = new URLSearchParams(window.location.search);
-  const isTVMode = urlParams.has('tv');
-  if (isTVMode) {
-    setTimeout(autoScaleContent, 100);
-  }
+  // Autoscale przy każdej zmianie DOM
+  setTimeout(autoScaleContent, 100);
 });
 
 // Obserwuj zmiany w menu-preview
