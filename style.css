@@ -552,8 +552,8 @@ body {
 }
 
 .preview-area .tv-screen {
-  width: 2160px;
-  height: 3840px;
+  width: 1080px;
+  height: 1920px;
   background: var(--bg-dots);
   background-image: url('pictures/back_tv1.png');
   background-size: cover;
@@ -609,8 +609,8 @@ body {
 
 .tv-screen .menu-container {
   width: 100%;
-  height: 3840px;
-  max-height: 3840px;
+  height: 1920px;
+  max-height: 1920px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
@@ -752,8 +752,8 @@ body {
 }
 
 .preview-area.fullscreen .tv-screen {
-  width: 2160px;
-  height: 3840px;
+  width: 1080px;
+  height: 1920px;
   max-width: 100vw;
   max-height: 100vh;
   transform: scale(1);
@@ -774,8 +774,8 @@ body.tv-mode .preview-area {
 }
 
 body.tv-mode .preview-area .tv-screen {
-  width: 2160px;
-  height: 3840px;
+  width: 1080px;
+  height: 1920px;
   max-width: 100vw;
   max-height: 100vh;
   transform: scale(1);
