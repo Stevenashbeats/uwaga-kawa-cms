@@ -996,7 +996,8 @@ async function saveAllChanges() {
     console.log(`📤 Zapisuję dane TV: ${currentTv.name}`);
     console.log(`📊 Font scale to save: ${currentTv.fontScale || 100}`);
     console.log(`📊 Logo scale to save: ${currentTv.logoScale || 100}`);
-    await authManager.apiRequest(`/tvs/${currentTv.id}`, {
+    
+    const tvUpdateResponse = await authManager.apiRequest(`/tvs/${currentTv.id}`, {
       method: 'PUT',
       body: JSON.stringify({
         name: currentTv.name,
@@ -1011,6 +1012,10 @@ async function saveAllChanges() {
         fontSectionNote: currentTv.fontSectionNote || 16
       })
     });
+    
+    console.log(`✅ TV zapisane, odpowiedź:`, tvUpdateResponse);
+    console.log(`✅ Zapisane font_scale:`, tvUpdateResponse.font_scale);
+    console.log(`✅ Zapisane logo_scale:`, tvUpdateResponse.logo_scale);
     
     // Zapisz każdą sekcję i jej pozycje
     for (const section of currentTv.sections) {

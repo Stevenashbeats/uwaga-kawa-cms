@@ -64,9 +64,9 @@ const observer = new MutationObserver(() => {
 });
 
 // Obserwuj zmiany w menu-preview
-const menuPreview = document.getElementById('menu-preview');
-if (menuPreview) {
-  observer.observe(menuPreview, { 
+const menuPreviewElement = document.getElementById('menu-preview');
+if (menuPreviewElement) {
+  observer.observe(menuPreviewElement, { 
     childList: true, 
     subtree: true,
     characterData: true 
