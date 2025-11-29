@@ -1,4 +1,4 @@
-// Automatyczne skalowanie zawartości do 1080x1920px
+// Automatyczne skalowanie zawartości do 2160x3840px (4K)
 let currentScale = 1;
 let isScaling = false;
 
@@ -19,7 +19,7 @@ function autoScaleContent() {
   
   // Użyj requestAnimationFrame dla płynności
   requestAnimationFrame(() => {
-    const containerHeight = 1920; // Pełna wysokość kontenera
+    const containerHeight = 3840; // Pełna wysokość kontenera (4K)
     const contentHeight = menuPreview.scrollHeight;
     
     let newScale = 1;
