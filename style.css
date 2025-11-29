@@ -638,7 +638,7 @@ body {
   text-align: center;
   margin-bottom: 40px;
   width: 100%;
-  max-width: 1020px;
+  max-width: 1000px;
   padding: 0 80px;
   box-sizing: border-box;
 }
@@ -667,7 +667,7 @@ body {
 .menu-section {
   margin-bottom: 48px;
   width: 100%;
-  max-width: 1020px;
+  max-width: 1000px;
   padding: 0 80px;
   box-sizing: border-box;
 }
