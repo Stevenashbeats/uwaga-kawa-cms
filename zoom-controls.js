@@ -87,8 +87,8 @@ function centerPreview() {
   const areaWidth = areaRect.width;
   const areaHeight = areaRect.height;
   
-  // Wymiary TV (1080x1920)
-  const screenWidth = 1080;
+  // Wymiary TV (1200x1920)
+  const screenWidth = 1200;
   const screenHeight = 1920;
   
   // Oblicz zoom dla szerokości i wysokości z marginesem
