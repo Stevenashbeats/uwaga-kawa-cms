@@ -436,6 +436,8 @@ async function loadStateFromURL() {
     }
     const tvDetails = await response.json();
     console.log('✅ Dane TV załadowane:', tvDetails);
+    console.log('📊 Font scale:', tvDetails.font_scale);
+    console.log('📊 Logo scale:', tvDetails.logo_scale);
     
     // Ustaw appState
     appState.tvs = {
