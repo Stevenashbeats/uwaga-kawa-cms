@@ -9,7 +9,7 @@ function autoScaleContent() {
   const isEditor = !isTVMode; // Jeśli nie TV, to edytor
   
   // Autoscale działa WSZĘDZIE (TV i edytor)
-  console.log(`🎯 Autoscale: tryb=${isTVMode ? 'TV' : 'Edytor'}`);
+  console.log(`🎯 Autoscale START: tryb=${isTVMode ? 'TV' : 'Edytor'}, timestamp=${Date.now()}`);
   
   const menuPreview = document.getElementById('menu-preview');
   const menuContainer = document.querySelector('.tv-screen .menu-container');
@@ -80,14 +80,21 @@ function autoScaleContent() {
 }
 
 // Uruchom autoscale po każdej zmianie - WSZĘDZIE (TV i edytor)
-const originalRenderPreview = window.renderPreview;
-if (originalRenderPreview) {
-  window.renderPreview = function() {
-    originalRenderPreview();
-    // Autoscale zawsze po renderze
-    setTimeout(autoScaleContent, 100);
-  };
-}
+// Opóźnij aby window.renderPreview było zdefiniowane
+setTimeout(() => {
+  const originalRenderPreview = window.renderPreview;
+  if (originalRenderPreview) {
+    window.renderPreview = function() {
+      originalRenderPreview();
+      // Autoscale zawsze po renderze
+      console.log('🎨 renderPreview wywołany - uruchamiam autoscale');
+      setTimeout(autoScaleContent, 100);
+    };
+    console.log('✅ Autoscale podpięty do renderPreview');
+  } else {
+    console.warn('⚠️ window.renderPreview nie istnieje');
+  }
+}, 100);
 
 // Uruchom przy załadowaniu
 window.addEventListener('load', () => {
