@@ -552,8 +552,8 @@ body {
 }
 
 .preview-area .tv-screen {
-  width: 1200px;
-  height: 1920px;
+  width: 720px;
+  height: 1280px;
   background: var(--bg-dots);
   background-image: url('pictures/back_tv1.png');
   background-size: cover;
@@ -609,15 +609,15 @@ body {
 
 .tv-screen .menu-container {
   width: 100%;
-  height: 1920px;
-  max-height: 1920px;
+  height: 1280px;
+  max-height: 1280px;
   overflow: hidden;
   display: flex;
   flex-direction: column;
   justify-content: flex-start;
   align-items: center;
   box-sizing: border-box;
-  padding: 60px 0;
+  padding: 40px 0;
   container-type: size;
   container-name: tv-container;
 }
@@ -635,25 +635,25 @@ body {
   overflow: visible;
   
   /* CSS Variables dla dynamicznych odstępów */
-  --section-margin: 48px;
-  --item-margin: 24px;
-  --section-padding: 30px 40px;
+  --section-margin: 32px;
+  --item-margin: 16px;
+  --section-padding: 20px 30px;
   
   /* CSS Variables dla rozmiarów fontów */
-  --font-section-title: 48px;
-  --font-item-name: 32px;
-  --font-item-description: 18px;
-  --font-item-price: 36px;
-  --font-section-note: 16px;
+  --font-section-title: 32px;
+  --font-item-name: 22px;
+  --font-item-description: 12px;
+  --font-item-price: 24px;
+  --font-section-note: 11px;
 }
 
 /* Logo header */
 .menu-header {
   text-align: center;
-  margin-bottom: 40px;
+  margin-bottom: 24px;
   width: 100%;
-  max-width: 1500px;
-  padding: 0 80px;
+  max-width: 900px;
+  padding: 0 50px;
   box-sizing: border-box;
 }
 
@@ -661,25 +661,25 @@ body {
   display: flex;
   justify-content: center;
   align-items: center;
-  margin-bottom: 8px;
+  margin-bottom: 6px;
 }
 
 .menu-logo img {
-  max-width: 500px;
+  max-width: 300px;
   height: auto;
 }
 
 .menu-title {
   font-family: 'Evogria', 'Bebas Neue', sans-serif;
-  font-size: 72px;
-  letter-spacing: 2px;
-  margin-bottom: 8px;
+  font-size: 48px;
+  letter-spacing: 1px;
+  margin-bottom: 6px;
   color: var(--text-dark);
 }
 
 .menu-subtitle {
-  font-size: 18px;
-  letter-spacing: 4px;
+  font-size: 12px;
+  letter-spacing: 3px;
   text-transform: uppercase;
   color: var(--text-gray);
   font-weight: 400;
@@ -687,10 +687,10 @@ body {
 
 /* Menu section */
 .menu-section {
-  margin-bottom: var(--section-margin, 48px);
+  margin-bottom: var(--section-margin, 32px);
   width: 100%;
-  max-width: 1500px;
-  padding: 0 80px;
+  max-width: 900px;
+  padding: 0 50px;
   box-sizing: border-box;
 }
 
@@ -703,9 +703,9 @@ body {
 }
 
 .section-box {
-  border: 3px solid var(--border-color);
-  border-radius: 16px;
-  padding: var(--section-padding, 30px 40px);
+  border: 2px solid var(--border-color);
+  border-radius: 12px;
+  padding: var(--section-padding, 20px 30px);
   background: transparent;
   backdrop-filter: none;
 }
@@ -714,8 +714,8 @@ body {
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  margin-bottom: var(--item-margin, 24px);
-  gap: 24px;
+  margin-bottom: var(--item-margin, 16px);
+  gap: 16px;
 }
 
 .menu-item:last-child {
@@ -753,10 +753,10 @@ body {
 }
 
 .section-note {
-  margin-top: 16px;
-  padding-top: 16px;
-  border-top: 2px solid #cccccc;
-  font-size: var(--font-section-note, 16px);
+  margin-top: 12px;
+  padding-top: 12px;
+  border-top: 1px solid #cccccc;
+  font-size: var(--font-section-note, 11px);
   color: var(--text-gray);
   font-style: italic;
 }
@@ -774,8 +774,8 @@ body {
 }
 
 .preview-area.fullscreen .tv-screen {
-  width: 1200px;
-  height: 1920px;
+  width: 720px;
+  height: 1280px;
   max-width: 100vw;
   max-height: 100vh;
   transform: scale(1);
@@ -800,8 +800,8 @@ body.tv-mode .preview-area {
 }
 
 body.tv-mode .preview-area .tv-screen {
-  width: 1200px;
-  height: 1920px;
+  width: 720px;
+  height: 1280px;
   transform: none;
   border-radius: 0;
   box-shadow: none;
