@@ -641,6 +641,13 @@ body {
   --section-margin: 48px;
   --item-margin: 24px;
   --section-padding: 30px 40px;
+  
+  /* CSS Variables dla rozmiarów fontów */
+  --font-section-title: 48px;
+  --font-item-name: 32px;
+  --font-item-description: 18px;
+  --font-item-price: 36px;
+  --font-section-note: 16px;
 }
 
 /* Logo header */
@@ -684,7 +691,7 @@ body {
 
 .section-title {
   font-family: 'Evogria', 'Bebas Neue', sans-serif;
-  font-size: clamp(24px, 2.5vw, 48px);
+  font-size: var(--font-section-title, 48px);
   letter-spacing: 1px;
   margin-bottom: clamp(8px, 1vh, 16px);
   color: var(--text-dark);
@@ -717,14 +724,14 @@ body {
 
 .item-name {
   font-family: 'Evogria', 'Bebas Neue', sans-serif;
-  font-size: clamp(18px, 1.8vw, 32px);
+  font-size: var(--font-item-name, 32px);
   letter-spacing: 0.5px;
   color: var(--text-dark);
   line-height: 1.2;
 }
 
 .item-description {
-  font-size: clamp(12px, 1vw, 18px);
+  font-size: var(--font-item-description, 18px);
   color: var(--text-dark);
   margin-top: 4px;
   font-weight: 400;
@@ -732,7 +739,7 @@ body {
 
 .item-price {
   font-family: 'Evogria', 'Bebas Neue', sans-serif;
-  font-size: clamp(20px, 2vw, 36px);
+  font-size: var(--font-item-price, 36px);
   color: var(--text-dark);
   white-space: nowrap;
   font-weight: 400;
@@ -744,7 +751,7 @@ body {
   margin-top: 16px;
   padding-top: 16px;
   border-top: 2px solid #cccccc;
-  font-size: 16px;
+  font-size: var(--font-section-note, 16px);
   color: var(--text-gray);
   font-style: italic;
 }

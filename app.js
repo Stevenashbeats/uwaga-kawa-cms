@@ -165,6 +165,11 @@ const renameTvBtn = document.getElementById("rename-tv-btn");
 const deleteTvBtn = document.getElementById("delete-tv-btn");
 const venueNameInput = document.getElementById("venue-name");
 const venueSubtitleInput = document.getElementById("venue-subtitle");
+const fontSectionTitleInput = document.getElementById("font-section-title");
+const fontItemNameInput = document.getElementById("font-item-name");
+const fontItemDescriptionInput = document.getElementById("font-item-description");
+const fontItemPriceInput = document.getElementById("font-item-price");
+const fontSectionNoteInput = document.getElementById("font-section-note");
 const addSectionBtn = document.getElementById("add-section-btn");
 const saveBtn = document.getElementById("save-btn");
 const generateLinkBtn = document.getElementById("generate-link-btn");
@@ -564,12 +569,22 @@ function renderEditor() {
   
   if (venueNameInput) venueNameInput.value = currentTv.venueName || '';
   if (venueSubtitleInput) venueSubtitleInput.value = currentTv.venueSubtitle || '';
+  
+  // Załaduj ustawienia fontów
+  if (fontSectionTitleInput) fontSectionTitleInput.value = currentTv.fontSectionTitle || 48;
+  if (fontItemNameInput) fontItemNameInput.value = currentTv.fontItemName || 32;
+  if (fontItemDescriptionInput) fontItemDescriptionInput.value = currentTv.fontItemDescription || 18;
+  if (fontItemPriceInput) fontItemPriceInput.value = currentTv.fontItemPrice || 36;
+  if (fontSectionNoteInput) fontSectionNoteInput.value = currentTv.fontSectionNote || 16;
 
   sectionsContainer.innerHTML = "";
   currentTv.sections.forEach((section, sectionIndex) => {
     const card = createSectionCard(section, sectionIndex);
     sectionsContainer.appendChild(card);
   });
+  
+  // Zastosuj ustawienia fontów
+  applyFontSettings();
 }
 
 // Utwórz kartę sekcji
@@ -787,6 +802,9 @@ function renderPreview() {
     console.log('📊 Liczba pozycji w pierwszej sekcji:', currentTv.sections[0].items?.length || 0);
   }
   
+  // Zastosuj ustawienia fontów
+  applyFontSettings();
+  
   menuPreview.innerHTML = "";
 
   // Header z logo
@@ -934,14 +952,19 @@ async function saveAllChanges() {
   }
 
   try {
-    // Zapisz nazwę lokalu i podtytuł
+    // Zapisz nazwę lokalu, podtytuł i ustawienia fontów
     console.log(`📤 Zapisuję dane TV: ${currentTv.name}`);
     await authManager.apiRequest(`/tvs/${currentTv.id}`, {
       method: 'PUT',
       body: JSON.stringify({
         name: currentTv.name,
         venueName: currentTv.venueName || "",
-        venueSubtitle: currentTv.venueSubtitle || ""
+        venueSubtitle: currentTv.venueSubtitle || "",
+        fontSectionTitle: currentTv.fontSectionTitle || 48,
+        fontItemName: currentTv.fontItemName || 32,
+        fontItemDescription: currentTv.fontItemDescription || 18,
+        fontItemPrice: currentTv.fontItemPrice || 36,
+        fontSectionNote: currentTv.fontSectionNote || 16
       })
     });
     
@@ -993,6 +1016,27 @@ async function saveAllChanges() {
   }
 }
 
+// Zastosuj ustawienia fontów do podglądu
+function applyFontSettings() {
+  const currentTv = getCurrentTv();
+  if (!currentTv || !menuPreview) return;
+  
+  console.log('🔤 Zastosowanie ustawień fontów:', {
+    sectionTitle: currentTv.fontSectionTitle,
+    itemName: currentTv.fontItemName,
+    itemDescription: currentTv.fontItemDescription,
+    itemPrice: currentTv.fontItemPrice,
+    sectionNote: currentTv.fontSectionNote
+  });
+  
+  // Ustaw CSS variables
+  menuPreview.style.setProperty('--font-section-title', `${currentTv.fontSectionTitle || 48}px`);
+  menuPreview.style.setProperty('--font-item-name', `${currentTv.fontItemName || 32}px`);
+  menuPreview.style.setProperty('--font-item-description', `${currentTv.fontItemDescription || 18}px`);
+  menuPreview.style.setProperty('--font-item-price', `${currentTv.fontItemPrice || 36}px`);
+  menuPreview.style.setProperty('--font-section-note', `${currentTv.fontSectionNote || 16}px`);
+}
+
 // Globalne listenery
 function attachGlobalListeners() {
   console.log('🔧 Podpinanie event listenerów...');
@@ -1011,6 +1055,37 @@ function attachGlobalListeners() {
   venueSubtitleInput.addEventListener("input", (e) => {
     getCurrentTv().venueSubtitle = e.target.value;
     renderPreview();
+    markAsUnsaved();
+  });
+  
+  // Ustawienia fontów
+  fontSectionTitleInput.addEventListener("input", (e) => {
+    getCurrentTv().fontSectionTitle = parseInt(e.target.value) || 48;
+    applyFontSettings();
+    markAsUnsaved();
+  });
+  
+  fontItemNameInput.addEventListener("input", (e) => {
+    getCurrentTv().fontItemName = parseInt(e.target.value) || 32;
+    applyFontSettings();
+    markAsUnsaved();
+  });
+  
+  fontItemDescriptionInput.addEventListener("input", (e) => {
+    getCurrentTv().fontItemDescription = parseInt(e.target.value) || 18;
+    applyFontSettings();
+    markAsUnsaved();
+  });
+  
+  fontItemPriceInput.addEventListener("input", (e) => {
+    getCurrentTv().fontItemPrice = parseInt(e.target.value) || 36;
+    applyFontSettings();
+    markAsUnsaved();
+  });
+  
+  fontSectionNoteInput.addEventListener("input", (e) => {
+    getCurrentTv().fontSectionNote = parseInt(e.target.value) || 16;
+    applyFontSettings();
     markAsUnsaved();
   });
 
