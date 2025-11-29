@@ -510,9 +510,17 @@ async function loadStateFromURL() {
             setTimeout(() => {
               renderPreview();
               preview.style.opacity = '1';
+              // Wywołaj autoscale po renderze
+              if (typeof autoScaleContent === 'function') {
+                setTimeout(autoScaleContent, 200);
+              }
             }, 150);
           } else {
             renderPreview();
+            // Wywołaj autoscale po renderze
+            if (typeof autoScaleContent === 'function') {
+              setTimeout(autoScaleContent, 200);
+            }
           }
         }
       } catch (e) {

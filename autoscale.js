@@ -64,5 +64,28 @@ if (originalRenderPreview) {
 }
 
 // Uruchom przy załadowaniu
-window.addEventListener('load', autoScaleContent);
+window.addEventListener('load', () => {
+  // Opóźnienie aby DOM się wyrenderował
+  setTimeout(autoScaleContent, 100);
+  setTimeout(autoScaleContent, 500);
+});
 window.addEventListener('resize', autoScaleContent);
+
+// Dodaj MutationObserver aby wykrywać zmiany w DOM
+const observer = new MutationObserver(() => {
+  const urlParams = new URLSearchParams(window.location.search);
+  const isTVMode = urlParams.has('tv');
+  if (isTVMode) {
+    setTimeout(autoScaleContent, 100);
+  }
+});
+
+// Obserwuj zmiany w menu-preview
+const menuPreview = document.getElementById('menu-preview');
+if (menuPreview) {
+  observer.observe(menuPreview, { 
+    childList: true, 
+    subtree: true,
+    characterData: true 
+  });
+}
