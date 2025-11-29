@@ -26,63 +26,45 @@ function autoScaleContent() {
   
   isScaling = true;
   
-  // Użyj requestAnimationFrame dla płynności
+  // NOWE PROSTE PODEJŚCIE
   requestAnimationFrame(() => {
-    const containerHeight = 1920; // Pełna wysokość kontenera
-    const paddingTop = 60; // padding górny
-    const paddingBottom = 60; // padding dolny
-    const safetyMargin = 80; // dodatkowy margines bezpieczeństwa (zwiększony)
+    // Tymczasowo usuń transform aby zmierzyć prawdziwą wysokość
+    const oldTransform = menuPreview.style.transform;
+    menuPreview.style.transform = 'none';
     
-    // Dostępna wysokość z marginesami
-    const availableHeight = containerHeight - paddingTop - paddingBottom - safetyMargin;
+    // Poczekaj na reflow
+    void menuPreview.offsetHeight;
     
-    // Pobierz rzeczywistą wysokość zawartości BEZ resetowania transform
-    // Jeśli jest już skalowane, podziel przez currentScale aby dostać oryginalną wysokość
-    let contentHeight = Math.max(
-      menuPreview.scrollHeight,
-      menuPreview.offsetHeight,
-      menuPreview.getBoundingClientRect().height
-    );
+    // Zmierz rzeczywistą wysokość
+    const contentHeight = menuPreview.scrollHeight;
+    const maxHeight = 1800; // Max wysokość z marginesami
     
-    // Jeśli jest już skalowane, oblicz oryginalną wysokość
-    if (currentScale !== 1 && currentScale > 0) {
-      contentHeight = contentHeight / currentScale;
-    }
-    
-    console.log(`📏 Autoscale: available=${availableHeight}px, content=${contentHeight}px (currentScale=${currentScale})`);
+    console.log(`📏 Autoscale: maxHeight=${maxHeight}px, contentHeight=${contentHeight}px`);
     
     let newScale = 1;
-      
-    // ZAWSZE skaluj jeśli zawartość jest większa niż dostępna wysokość
-    if (contentHeight > availableHeight) {
-      // Oblicz skalę aby zmieścić zawartość
-      newScale = availableHeight / contentHeight;
-      // Dodatkowe zmniejszenie o 5% dla pewności (zwiększone z 2%)
-      newScale = newScale * 0.95;
-      console.log(`🔽 Skalowanie do ${Math.round(newScale * 100)}% (${contentHeight}px → ${Math.round(contentHeight * newScale)}px)`);
+    
+    // Oblicz skalę
+    if (contentHeight > maxHeight) {
+      newScale = maxHeight / contentHeight;
+      console.log(`🔽 Skalowanie do ${Math.round(newScale * 100)}%`);
     } else {
       console.log(`✅ Zawartość mieści się bez skalowania`);
     }
     
-    // Zastosuj skalę tylko jeśli się zmieniła (unikaj niepotrzebnych rerenderów)
-    if (Math.abs(newScale - currentScale) > 0.001) {
-      currentScale = newScale;
-      menuPreview.style.transformOrigin = 'top center';
-      menuPreview.style.transform = `scale(${newScale})`;
-      console.log(`✨ Zastosowano transform: scale(${newScale})`);
-      
-      if (newScale < 1) {
-        // Ustaw wysokość i ujemny margin aby zawartość nie wychodziła poza
-        const scaledHeight = contentHeight * newScale;
-        menuPreview.style.height = `${contentHeight}px`;
-        menuPreview.style.marginBottom = `-${(contentHeight - scaledHeight)}px`;
-        console.log(`📐 Ustawiono height=${contentHeight}px, marginBottom=-${Math.round(contentHeight - scaledHeight)}px`);
-      } else {
-        menuPreview.style.height = 'auto';
-        menuPreview.style.marginBottom = '0';
-      }
+    // Zastosuj transform
+    currentScale = newScale;
+    menuPreview.style.transform = `scale(${newScale})`;
+    menuPreview.style.transformOrigin = 'top center';
+    
+    // Ustaw wysokość aby nie wychodziło poza
+    if (newScale < 1) {
+      const scaledHeight = contentHeight * newScale;
+      menuPreview.style.height = `${contentHeight}px`;
+      menuPreview.style.marginBottom = `-${Math.round(contentHeight - scaledHeight)}px`;
+      console.log(`📐 height=${contentHeight}px, marginBottom=-${Math.round(contentHeight - scaledHeight)}px`);
     } else {
-      console.log(`⏭️ Pomijam - skala się nie zmieniła`);
+      menuPreview.style.height = 'auto';
+      menuPreview.style.marginBottom = '0';
     }
     
     isScaling = false;
