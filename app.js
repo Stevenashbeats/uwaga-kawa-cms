@@ -570,14 +570,22 @@ function renderEditor() {
   if (venueNameInput) venueNameInput.value = currentTv.venueName || '';
   if (venueSubtitleInput) venueSubtitleInput.value = currentTv.venueSubtitle || '';
   
-  // Załaduj global scale
-  const globalScaleInput = document.getElementById('global-scale');
-  const scaleValueSpan = document.getElementById('scale-value');
-  if (globalScaleInput && scaleValueSpan) {
-    const scale = currentTv.globalScale || 100;
-    globalScaleInput.value = scale;
-    scaleValueSpan.textContent = scale;
-    applyGlobalScale(scale);
+  // Załaduj font scale
+  const fontScaleInput = document.getElementById('font-scale');
+  const fontScaleValueSpan = document.getElementById('font-scale-value');
+  if (fontScaleInput && fontScaleValueSpan) {
+    const scale = currentTv.fontScale || 100;
+    fontScaleInput.value = scale;
+    fontScaleValueSpan.textContent = scale;
+  }
+  
+  // Załaduj logo scale
+  const logoScaleInput = document.getElementById('logo-scale');
+  const logoScaleValueSpan = document.getElementById('logo-scale-value');
+  if (logoScaleInput && logoScaleValueSpan) {
+    const scale = currentTv.logoScale || 100;
+    logoScaleInput.value = scale;
+    logoScaleValueSpan.textContent = scale;
   }
   
   // Załaduj ustawienia fontów
@@ -812,9 +820,8 @@ function renderPreview() {
     console.log('📊 Liczba pozycji w pierwszej sekcji:', currentTv.sections[0].items?.length || 0);
   }
   
-  // Zastosuj ustawienia fontów i global scale
+  // Zastosuj ustawienia fontów
   applyFontSettings();
-  applyGlobalScale(currentTv.globalScale || 100);
   
   menuPreview.innerHTML = "";
 
@@ -945,6 +952,10 @@ function renderPreview() {
       menuPreview.appendChild(sectionEl);
     });
   }
+  
+  // Zastosuj skalowanie po renderze
+  applyFontScale(currentTv.fontScale || 100);
+  applyLogoScale(currentTv.logoScale || 100);
 }
 
 // Zapisz wszystkie zmiany do API
@@ -963,7 +974,7 @@ async function saveAllChanges() {
   }
 
   try {
-    // Zapisz nazwę lokalu, podtytuł, global scale i ustawienia fontów
+    // Zapisz nazwę lokalu, podtytuł, skalowanie i ustawienia fontów
     console.log(`📤 Zapisuję dane TV: ${currentTv.name}`);
     await authManager.apiRequest(`/tvs/${currentTv.id}`, {
       method: 'PUT',
@@ -971,7 +982,8 @@ async function saveAllChanges() {
         name: currentTv.name,
         venueName: currentTv.venueName || "",
         venueSubtitle: currentTv.venueSubtitle || "",
-        globalScale: currentTv.globalScale || 100,
+        fontScale: currentTv.fontScale || 100,
+        logoScale: currentTv.logoScale || 100,
         fontSectionTitle: currentTv.fontSectionTitle || 48,
         fontItemName: currentTv.fontItemName || 32,
         fontItemDescription: currentTv.fontItemDescription || 18,
@@ -1071,14 +1083,33 @@ function initCollapsible() {
   }
 }
 
-// Global scale
-function applyGlobalScale(scale) {
+// Font scale
+function applyFontScale(scale) {
   const menuPreview = document.getElementById('menu-preview');
   if (!menuPreview) return;
   
-  // Przeskaluj wszystko przez transform
-  menuPreview.style.transform = `scale(${scale / 100})`;
-  menuPreview.style.transformOrigin = 'top center';
+  // Przeskaluj fonty przez CSS variable
+  const currentTv = getCurrentTv();
+  const baseFontSectionTitle = currentTv.fontSectionTitle || 32;
+  const baseFontItemName = currentTv.fontItemName || 22;
+  const baseFontItemDescription = currentTv.fontItemDescription || 12;
+  const baseFontItemPrice = currentTv.fontItemPrice || 24;
+  const baseFontSectionNote = currentTv.fontSectionNote || 11;
+  
+  menuPreview.style.setProperty('--font-section-title', `${baseFontSectionTitle * scale / 100}px`);
+  menuPreview.style.setProperty('--font-item-name', `${baseFontItemName * scale / 100}px`);
+  menuPreview.style.setProperty('--font-item-description', `${baseFontItemDescription * scale / 100}px`);
+  menuPreview.style.setProperty('--font-item-price', `${baseFontItemPrice * scale / 100}px`);
+  menuPreview.style.setProperty('--font-section-note', `${baseFontSectionNote * scale / 100}px`);
+}
+
+// Logo scale
+function applyLogoScale(scale) {
+  const logos = document.querySelectorAll('.menu-logo img');
+  logos.forEach(logo => {
+    logo.style.transform = `scale(${scale / 100})`;
+    logo.style.transformOrigin = 'center';
+  });
 }
 
 // Globalne listenery
@@ -1093,16 +1124,30 @@ function attachGlobalListeners() {
   // Collapsible
   initCollapsible();
   
-  // Global scale slider
-  const globalScaleInput = document.getElementById('global-scale');
-  const scaleValueSpan = document.getElementById('scale-value');
+  // Font scale slider
+  const fontScaleInput = document.getElementById('font-scale');
+  const fontScaleValueSpan = document.getElementById('font-scale-value');
   
-  if (globalScaleInput && scaleValueSpan) {
-    globalScaleInput.addEventListener('input', (e) => {
+  if (fontScaleInput && fontScaleValueSpan) {
+    fontScaleInput.addEventListener('input', (e) => {
       const scale = parseInt(e.target.value);
-      scaleValueSpan.textContent = scale;
-      getCurrentTv().globalScale = scale;
-      applyGlobalScale(scale);
+      fontScaleValueSpan.textContent = scale;
+      getCurrentTv().fontScale = scale;
+      applyFontScale(scale);
+      markAsUnsaved();
+    });
+  }
+  
+  // Logo scale slider
+  const logoScaleInput = document.getElementById('logo-scale');
+  const logoScaleValueSpan = document.getElementById('logo-scale-value');
+  
+  if (logoScaleInput && logoScaleValueSpan) {
+    logoScaleInput.addEventListener('input', (e) => {
+      const scale = parseInt(e.target.value);
+      logoScaleValueSpan.textContent = scale;
+      getCurrentTv().logoScale = scale;
+      applyLogoScale(scale);
       markAsUnsaved();
     });
   }

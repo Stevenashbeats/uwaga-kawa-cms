@@ -216,15 +216,15 @@ router.put('/api/tvs/:id', async (request, env) => {
     }
     
     const { id } = request.params;
-    const { name, venueName, venueSubtitle, globalScale, fontSectionTitle, fontItemName, fontItemDescription, fontItemPrice, fontSectionNote } = await request.json();
+    const { name, venueName, venueSubtitle, fontScale, logoScale, fontSectionTitle, fontItemName, fontItemDescription, fontItemPrice, fontSectionNote } = await request.json();
     
     await env.DB.prepare(
-      `UPDATE tvs SET name = ?, venue_name = ?, venue_subtitle = ?, global_scale = ?,
+      `UPDATE tvs SET name = ?, venue_name = ?, venue_subtitle = ?, font_scale = ?, logo_scale = ?,
        font_section_title = ?, font_item_name = ?, font_item_description = ?, font_item_price = ?, font_section_note = ?,
        updated_at = CURRENT_TIMESTAMP
        WHERE id = ? AND venue_id = ?`
     ).bind(
-      name, venueName, venueSubtitle || '', globalScale || 100,
+      name, venueName, venueSubtitle || '', fontScale || 100, logoScale || 100,
       fontSectionTitle || 48, fontItemName || 32, fontItemDescription || 18, fontItemPrice || 36, fontSectionNote || 16,
       id, user.venue_id
     ).run();

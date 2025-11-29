@@ -72,13 +72,18 @@
         <!-- Skalowanie globalne -->
         <section class="editor-section">
           <h3 class="collapsible-header" id="scale-header">
-            📐 Skalowanie (fonty + logo) <span class="toggle-icon">▼</span>
+            📐 Skalowanie <span class="toggle-icon">▼</span>
           </h3>
           <div class="collapsible-content" id="scale-content">
             <div class="field">
-              <label>Skala globalna: <span id="scale-value">100</span>%</label>
-              <input type="range" id="global-scale" min="50" max="200" value="100" step="5" />
-              <small>Przeskaluj wszystkie fonty i logo jednocześnie</small>
+              <label>🔤 Skala fontów: <span id="font-scale-value">100</span>%</label>
+              <input type="range" id="font-scale" min="50" max="200" value="100" step="5" />
+              <small>Przeskaluj wszystkie fonty (tytuły, opisy, ceny)</small>
+            </div>
+            <div class="field">
+              <label>🖼️ Skala logo: <span id="logo-scale-value">100</span>%</label>
+              <input type="range" id="logo-scale" min="50" max="200" value="100" step="5" />
+              <small>Przeskaluj tylko logo</small>
             </div>
           </div>
         </section>
