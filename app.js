@@ -463,6 +463,7 @@ async function loadStateFromURL() {
     
     setInterval(async () => {
       try {
+        console.log('🔄 Sprawdzam aktualizacje...');
         // Określ API URL
         const apiUrl = (window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1' || window.location.protocol === 'file:')
           ? 'http://localhost:8787/api'
@@ -470,7 +471,10 @@ async function loadStateFromURL() {
         
         // Pobierz nowe dane
         const response = await fetch(`${apiUrl}/tvs/${tvid}/public`);
-        if (!response.ok) return;
+        if (!response.ok) {
+          console.error('❌ Błąd pobierania danych:', response.status);
+          return;
+        }
         
         const tvDetails = await response.json();
         const newDataHash = JSON.stringify(tvDetails.sections);
@@ -478,6 +482,8 @@ async function loadStateFromURL() {
         // Jeśli dane się zmieniły, odśwież
         if (newDataHash !== lastDataHash) {
           console.log('📝 Wykryto zmiany - odświeżam widok');
+          console.log('Old hash:', lastDataHash.substring(0, 50) + '...');
+          console.log('New hash:', newDataHash.substring(0, 50) + '...');
           lastDataHash = newDataHash;
           
           // Aktualizuj dane
