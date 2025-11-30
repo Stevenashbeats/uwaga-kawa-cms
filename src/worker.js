@@ -217,19 +217,19 @@ router.put('/api/tvs/:id', async (request, env) => {
     
     const { id } = request.params;
     const body = await request.json();
-    const { name, venueName, venueSubtitle, fontScale, logoScale, lineHeight, fontSectionTitle, fontItemName, fontItemDescription, fontItemPrice, fontSectionNote } = body;
+    const { name, venueName, venueSubtitle, fontScale, logoScale, lineHeight, bottomMargin, fontSectionTitle, fontItemName, fontItemDescription, fontItemPrice, fontSectionNote } = body;
     
     console.log('📥 Received fontScale:', fontScale);
     console.log('📥 Received logoScale:', logoScale);
     console.log('📥 Full body:', body);
     
     await env.DB.prepare(
-      `UPDATE tvs SET name = ?, venue_name = ?, venue_subtitle = ?, font_scale = ?, logo_scale = ?, line_height = ?,
+      `UPDATE tvs SET name = ?, venue_name = ?, venue_subtitle = ?, font_scale = ?, logo_scale = ?, line_height = ?, bottom_margin = ?,
        font_section_title = ?, font_item_name = ?, font_item_description = ?, font_item_price = ?, font_section_note = ?,
        updated_at = CURRENT_TIMESTAMP
        WHERE id = ? AND venue_id = ?`
     ).bind(
-      name, venueName, venueSubtitle || '', fontScale || 100, logoScale || 100, lineHeight || 1.2,
+      name, venueName, venueSubtitle || '', fontScale || 100, logoScale || 100, lineHeight || 1.2, bottomMargin || 0,
       fontSectionTitle || 48, fontItemName || 32, fontItemDescription || 18, fontItemPrice || 36, fontSectionNote || 16,
       id, user.venue_id
     ).run();

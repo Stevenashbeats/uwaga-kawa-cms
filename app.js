@@ -513,6 +513,7 @@ async function loadStateFromURL() {
           appState.tvs[tvid].fontScale = tvDetails.font_scale || 100;
           appState.tvs[tvid].logoScale = tvDetails.logo_scale || 100;
           appState.tvs[tvid].lineHeight = tvDetails.line_height || 1.2;
+          appState.tvs[tvid].bottomMargin = tvDetails.bottom_margin || 0;
           appState.tvs[tvid].fontSectionTitle = tvDetails.font_section_title || 32;
           appState.tvs[tvid].fontItemName = tvDetails.font_item_name || 22;
           appState.tvs[tvid].fontItemDescription = tvDetails.font_item_description || 12;
@@ -546,10 +547,12 @@ async function loadStateFromURL() {
                 console.log('📊 fontScale:', currentTv.fontScale);
                 console.log('📊 logoScale:', currentTv.logoScale);
                 console.log('📊 lineHeight:', currentTv.lineHeight);
+                console.log('📊 bottomMargin:', currentTv.bottomMargin);
                 applyFontSettings();
                 applyFontScale(currentTv.fontScale || 100);
                 applyLogoScale(currentTv.logoScale || 100);
                 applyLineHeight(currentTv.lineHeight || 1.2);
+                applyBottomMargin(currentTv.bottomMargin || 0);
               }
               
               preview.style.opacity = '1';
@@ -636,6 +639,16 @@ function renderEditor() {
     console.log(`📥 Loading line height: ${lineHeight}`);
     lineHeightInput.value = lineHeight;
     lineHeightValueSpan.textContent = lineHeight.toFixed(1);
+  }
+  
+  // Załaduj bottom margin
+  const bottomMarginInput = document.getElementById('bottom-margin');
+  const bottomMarginValueSpan = document.getElementById('bottom-margin-value');
+  if (bottomMarginInput && bottomMarginValueSpan) {
+    const margin = currentTv.bottomMargin || 0;
+    console.log(`📥 Loading bottom margin: ${margin}px`);
+    bottomMarginInput.value = margin;
+    bottomMarginValueSpan.textContent = margin;
   }
   
   // Załaduj ustawienia fontów
@@ -1032,6 +1045,7 @@ async function saveAllChanges() {
     console.log(`📊 Font scale to save: ${currentTv.fontScale || 100}`);
     console.log(`📊 Logo scale to save: ${currentTv.logoScale || 100}`);
     console.log(`📊 Line height to save: ${currentTv.lineHeight || 1.2}`);
+    console.log(`📊 Bottom margin to save: ${currentTv.bottomMargin || 0}`);
     
     const tvUpdateResponse = await authManager.apiRequest(`/tvs/${currentTv.id}`, {
       method: 'PUT',
@@ -1042,6 +1056,7 @@ async function saveAllChanges() {
         fontScale: currentTv.fontScale || 100,
         logoScale: currentTv.logoScale || 100,
         lineHeight: currentTv.lineHeight || 1.2,
+        bottomMargin: currentTv.bottomMargin || 0,
         fontSectionTitle: currentTv.fontSectionTitle || 48,
         fontItemName: currentTv.fontItemName || 32,
         fontItemDescription: currentTv.fontItemDescription || 18,
@@ -1091,15 +1106,18 @@ async function saveAllChanges() {
       currentTv.fontScale = tvUpdateResponse.font_scale || 100;
       currentTv.logoScale = tvUpdateResponse.logo_scale || 100;
       currentTv.lineHeight = tvUpdateResponse.line_height || 1.2;
+      currentTv.bottomMargin = tvUpdateResponse.bottom_margin || 0;
       console.log(`✅ Zaktualizowano fontScale: ${currentTv.fontScale}`);
       console.log(`✅ Zaktualizowano logoScale: ${currentTv.logoScale}`);
       console.log(`✅ Zaktualizowano lineHeight: ${currentTv.lineHeight}`);
+      console.log(`✅ Zaktualizowano bottomMargin: ${currentTv.bottomMargin}`);
       
       // Zastosuj skalowanie do podglądu
       applyFontSettings();
       applyFontScale(currentTv.fontScale);
       applyLogoScale(currentTv.logoScale);
       applyLineHeight(currentTv.lineHeight);
+      applyBottomMargin(currentTv.bottomMargin);
     }
     
     // Odśwież linki TV
@@ -1215,6 +1233,15 @@ function applyLineHeight(lineHeight) {
   });
 }
 
+// Bottom margin
+function applyBottomMargin(margin) {
+  console.log(`⬇️ Applying bottom margin: ${margin}px`);
+  const menuPreview = document.getElementById('menu-preview');
+  if (menuPreview) {
+    menuPreview.style.paddingBottom = `${margin}px`;
+  }
+}
+
 // Podepnij slidery skalowania
 function attachScaleListeners() {
   console.log('🎚️ Podpinam slidery skalowania...');
@@ -1305,6 +1332,35 @@ function attachScaleListeners() {
     console.error('❌ Line height slider NOT FOUND!');
     console.error('lineHeightInput:', lineHeightInput);
     console.error('lineHeightValueSpan:', lineHeightValueSpan);
+  }
+  
+  // Bottom margin slider
+  const bottomMarginInput = document.getElementById('bottom-margin');
+  const bottomMarginValueSpan = document.getElementById('bottom-margin-value');
+  
+  if (bottomMarginInput && bottomMarginValueSpan) {
+    console.log('✅ Bottom margin slider found, attaching listener');
+    
+    // Usuń stary listener jeśli istnieje
+    const newBottomMarginInput = bottomMarginInput.cloneNode(true);
+    bottomMarginInput.parentNode.replaceChild(newBottomMarginInput, bottomMarginInput);
+    
+    newBottomMarginInput.addEventListener('input', (e) => {
+      const margin = parseInt(e.target.value);
+      console.log(`📝 Bottom margin changed to: ${margin}px`);
+      bottomMarginValueSpan.textContent = margin;
+      getCurrentTv().bottomMargin = margin;
+      console.log(`💾 Saved to currentTv:`, getCurrentTv().bottomMargin);
+      
+      // Zastosuj bottom margin natychmiast
+      applyBottomMargin(margin);
+      
+      markAsUnsaved();
+    });
+  } else {
+    console.error('❌ Bottom margin slider NOT FOUND!');
+    console.error('bottomMarginInput:', bottomMarginInput);
+    console.error('bottomMarginValueSpan:', bottomMarginValueSpan);
   }
 }
 
