@@ -1176,7 +1176,11 @@ function attachScaleListeners() {
       fontScaleValueSpan.textContent = scale;
       getCurrentTv().fontScale = scale;
       console.log(`💾 Saved to currentTv:`, getCurrentTv().fontScale);
-      applyFontScale(scale);
+      
+      // Zastosuj skalowanie natychmiast
+      applyFontSettings(); // Najpierw bazowe ustawienia
+      applyFontScale(scale); // Potem skalowanie
+      
       markAsUnsaved();
     });
   } else {
@@ -1202,7 +1206,10 @@ function attachScaleListeners() {
       logoScaleValueSpan.textContent = scale;
       getCurrentTv().logoScale = scale;
       console.log(`💾 Saved to currentTv:`, getCurrentTv().logoScale);
+      
+      // Zastosuj skalowanie natychmiast
       applyLogoScale(scale);
+      
       markAsUnsaved();
     });
   } else {
