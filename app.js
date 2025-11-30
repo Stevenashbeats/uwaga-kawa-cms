@@ -1148,6 +1148,7 @@ function attachGlobalListeners() {
   const fontScaleValueSpan = document.getElementById('font-scale-value');
   
   if (fontScaleInput && fontScaleValueSpan) {
+    console.log('✅ Font scale slider found, attaching listener');
     fontScaleInput.addEventListener('input', (e) => {
       const scale = parseInt(e.target.value);
       console.log(`📝 Font scale changed to: ${scale}%`);
@@ -1157,6 +1158,10 @@ function attachGlobalListeners() {
       applyFontScale(scale);
       markAsUnsaved();
     });
+  } else {
+    console.error('❌ Font scale slider NOT FOUND!');
+    console.error('fontScaleInput:', fontScaleInput);
+    console.error('fontScaleValueSpan:', fontScaleValueSpan);
   }
   
   // Logo scale slider
@@ -1164,6 +1169,7 @@ function attachGlobalListeners() {
   const logoScaleValueSpan = document.getElementById('logo-scale-value');
   
   if (logoScaleInput && logoScaleValueSpan) {
+    console.log('✅ Logo scale slider found, attaching listener');
     logoScaleInput.addEventListener('input', (e) => {
       const scale = parseInt(e.target.value);
       console.log(`📝 Logo scale changed to: ${scale}%`);
@@ -1173,6 +1179,10 @@ function attachGlobalListeners() {
       applyLogoScale(scale);
       markAsUnsaved();
     });
+  } else {
+    console.error('❌ Logo scale slider NOT FOUND!');
+    console.error('logoScaleInput:', logoScaleInput);
+    console.error('logoScaleValueSpan:', logoScaleValueSpan);
   }
   
   venueNameInput.addEventListener("input", (e) => {
