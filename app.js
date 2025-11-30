@@ -1111,17 +1111,38 @@ function initCollapsible() {
   }
 }
 
-// Font scale - skaluje cały kontener menu
+// Font scale - skaluje tylko teksty
 function applyFontScale(scale) {
   const menuPreview = document.getElementById('menu-preview');
   if (!menuPreview) return;
   
   console.log(`🔤 Applying font scale: ${scale}%`);
   
-  // Skaluj przez transform zamiast nadpisywać CSS variables
-  const logoScale = getCurrentTv()?.logoScale || 100;
-  menuPreview.style.transform = `scale(${scale / 100})`;
-  menuPreview.style.transformOrigin = 'top center';
+  // Skaluj tylko teksty przez CSS variables
+  const currentTv = getCurrentTv();
+  const baseFontSectionTitle = currentTv.fontSectionTitle || 32;
+  const baseFontItemName = currentTv.fontItemName || 22;
+  const baseFontItemDescription = currentTv.fontItemDescription || 12;
+  const baseFontItemPrice = currentTv.fontItemPrice || 24;
+  const baseFontSectionNote = currentTv.fontSectionNote || 11;
+  
+  // Zastosuj skalę do bazowych rozmiarów
+  menuPreview.style.setProperty('--font-section-title', `${baseFontSectionTitle * scale / 100}px`);
+  menuPreview.style.setProperty('--font-item-name', `${baseFontItemName * scale / 100}px`);
+  menuPreview.style.setProperty('--font-item-description', `${baseFontItemDescription * scale / 100}px`);
+  menuPreview.style.setProperty('--font-item-price', `${baseFontItemPrice * scale / 100}px`);
+  menuPreview.style.setProperty('--font-section-note', `${baseFontSectionNote * scale / 100}px`);
+  
+  // Skaluj również tytuł menu jeśli istnieje
+  const menuTitle = document.querySelector('.menu-title');
+  if (menuTitle) {
+    menuTitle.style.fontSize = `${48 * scale / 100}px`;
+  }
+  
+  const menuSubtitle = document.querySelector('.menu-subtitle');
+  if (menuSubtitle) {
+    menuSubtitle.style.fontSize = `${12 * scale / 100}px`;
+  }
 }
 
 // Logo scale
