@@ -512,6 +512,7 @@ async function loadStateFromURL() {
           appState.tvs[tvid].venueSubtitle = tvDetails.venue_subtitle || '';
           appState.tvs[tvid].fontScale = tvDetails.font_scale || 100;
           appState.tvs[tvid].logoScale = tvDetails.logo_scale || 100;
+          appState.tvs[tvid].lineHeight = tvDetails.line_height || 1.2;
           appState.tvs[tvid].fontSectionTitle = tvDetails.font_section_title || 32;
           appState.tvs[tvid].fontItemName = tvDetails.font_item_name || 22;
           appState.tvs[tvid].fontItemDescription = tvDetails.font_item_description || 12;
@@ -544,9 +545,11 @@ async function loadStateFromURL() {
                 console.log('🔄 Aplikuję skalowanie po auto-refresh');
                 console.log('📊 fontScale:', currentTv.fontScale);
                 console.log('📊 logoScale:', currentTv.logoScale);
+                console.log('📊 lineHeight:', currentTv.lineHeight);
                 applyFontSettings();
                 applyFontScale(currentTv.fontScale || 100);
                 applyLogoScale(currentTv.logoScale || 100);
+                applyLineHeight(currentTv.lineHeight || 1.2);
               }
               
               preview.style.opacity = '1';
@@ -623,6 +626,16 @@ function renderEditor() {
     console.log(`📥 Loading logo scale: ${scale}%`);
     logoScaleInput.value = scale;
     logoScaleValueSpan.textContent = scale;
+  }
+  
+  // Załaduj line height
+  const lineHeightInput = document.getElementById('line-height');
+  const lineHeightValueSpan = document.getElementById('line-height-value');
+  if (lineHeightInput && lineHeightValueSpan) {
+    const lineHeight = currentTv.lineHeight || 1.2;
+    console.log(`📥 Loading line height: ${lineHeight}`);
+    lineHeightInput.value = lineHeight;
+    lineHeightValueSpan.textContent = lineHeight.toFixed(1);
   }
   
   // Załaduj ustawienia fontów
@@ -1018,6 +1031,7 @@ async function saveAllChanges() {
     console.log(`📤 Zapisuję dane TV: ${currentTv.name}`);
     console.log(`📊 Font scale to save: ${currentTv.fontScale || 100}`);
     console.log(`📊 Logo scale to save: ${currentTv.logoScale || 100}`);
+    console.log(`📊 Line height to save: ${currentTv.lineHeight || 1.2}`);
     
     const tvUpdateResponse = await authManager.apiRequest(`/tvs/${currentTv.id}`, {
       method: 'PUT',
@@ -1027,6 +1041,7 @@ async function saveAllChanges() {
         venueSubtitle: currentTv.venueSubtitle || "",
         fontScale: currentTv.fontScale || 100,
         logoScale: currentTv.logoScale || 100,
+        lineHeight: currentTv.lineHeight || 1.2,
         fontSectionTitle: currentTv.fontSectionTitle || 48,
         fontItemName: currentTv.fontItemName || 32,
         fontItemDescription: currentTv.fontItemDescription || 18,
@@ -1075,13 +1090,16 @@ async function saveAllChanges() {
     if (tvUpdateResponse) {
       currentTv.fontScale = tvUpdateResponse.font_scale || 100;
       currentTv.logoScale = tvUpdateResponse.logo_scale || 100;
+      currentTv.lineHeight = tvUpdateResponse.line_height || 1.2;
       console.log(`✅ Zaktualizowano fontScale: ${currentTv.fontScale}`);
       console.log(`✅ Zaktualizowano logoScale: ${currentTv.logoScale}`);
+      console.log(`✅ Zaktualizowano lineHeight: ${currentTv.lineHeight}`);
       
       // Zastosuj skalowanie do podglądu
       applyFontSettings();
       applyFontScale(currentTv.fontScale);
       applyLogoScale(currentTv.logoScale);
+      applyLineHeight(currentTv.lineHeight);
     }
     
     // Odśwież linki TV
@@ -1188,6 +1206,15 @@ function applyLogoScale(scale) {
   });
 }
 
+// Line height
+function applyLineHeight(lineHeight) {
+  console.log(`📏 Applying line height: ${lineHeight}`);
+  const menuItems = document.querySelectorAll('.menu-item');
+  menuItems.forEach(item => {
+    item.style.lineHeight = lineHeight;
+  });
+}
+
 // Podepnij slidery skalowania
 function attachScaleListeners() {
   console.log('🎚️ Podpinam slidery skalowania...');
@@ -1249,6 +1276,35 @@ function attachScaleListeners() {
     console.error('❌ Logo scale slider NOT FOUND!');
     console.error('logoScaleInput:', logoScaleInput);
     console.error('logoScaleValueSpan:', logoScaleValueSpan);
+  }
+  
+  // Line height slider
+  const lineHeightInput = document.getElementById('line-height');
+  const lineHeightValueSpan = document.getElementById('line-height-value');
+  
+  if (lineHeightInput && lineHeightValueSpan) {
+    console.log('✅ Line height slider found, attaching listener');
+    
+    // Usuń stary listener jeśli istnieje
+    const newLineHeightInput = lineHeightInput.cloneNode(true);
+    lineHeightInput.parentNode.replaceChild(newLineHeightInput, lineHeightInput);
+    
+    newLineHeightInput.addEventListener('input', (e) => {
+      const lineHeight = parseFloat(e.target.value);
+      console.log(`📝 Line height changed to: ${lineHeight}`);
+      lineHeightValueSpan.textContent = lineHeight.toFixed(1);
+      getCurrentTv().lineHeight = lineHeight;
+      console.log(`💾 Saved to currentTv:`, getCurrentTv().lineHeight);
+      
+      // Zastosuj line height natychmiast
+      applyLineHeight(lineHeight);
+      
+      markAsUnsaved();
+    });
+  } else {
+    console.error('❌ Line height slider NOT FOUND!');
+    console.error('lineHeightInput:', lineHeightInput);
+    console.error('lineHeightValueSpan:', lineHeightValueSpan);
   }
 }
 
